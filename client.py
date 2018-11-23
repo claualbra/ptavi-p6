@@ -27,8 +27,16 @@ with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
     my_socket.send(bytes(METODO + ' sip:' + ADRESS + ' SIP/2.0', 'utf-8')
                     + b'\r\n\r\n')
     data = my_socket.recv(1024)
-
+    recb = data.decode('utf-8').split()
     print('Recibido -- ', data.decode('utf-8'))
-    print("Terminando socket...")
-
+    if METODO == 'INVITE':
+        if recb[2] == 'Trying' and recb[5] == "Ringing" and recb[8]== "OK":
+            my_socket.send(bytes('ACK' + ' sip:' + ADRESS + ' SIP/2.0', 'utf-8')
+                            + b'\r\n\r\n')
+    if METODO == 'BYE':
+        my_socket.send(bytes(METODO + ' sip:' + ADRESS + ' SIP/2.0', 'utf-8')
+                        + b'\r\n\r\n')
+        if data.decode('utf-8') == "SIP/2.0 200 OK\r\n\r\n":
+            print('Recibido -- ', data.decode('utf-8'))
+            print("Terminando socket...")
 print("Fin.")
