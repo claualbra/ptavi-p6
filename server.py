@@ -8,6 +8,7 @@ import socketserver
 import sys
 import os
 
+
 class EchoHandler(socketserver.DatagramRequestHandler):
     """
     Echo server class
@@ -26,8 +27,8 @@ class EchoHandler(socketserver.DatagramRequestHandler):
             (metodo, address, sip) = linea.split()
             if metodo == 'INVITE':
                 self.wfile.write(b"SIP/2.0 100 Trying\r\n\r\n"
-                                + b"SIP/2.0 180 Ringing\r\n\r\n"
-                                + b"SIP/2.0 200 OK\r\n\r\n")
+                                 + b"SIP/2.0 180 Ringing\r\n\r\n"
+                                 + b"SIP/2.0 200 OK\r\n\r\n")
             elif metodo == 'ACK':
                 # aEjecutar es un string con lo que se ha de ejecutar en la shell
                 aEjecutar = 'mp32rtp -i 127.0.0.1 -p 23032 < ' + AUDIO
