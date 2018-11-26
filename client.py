@@ -10,7 +10,6 @@ import sys
 try:
     METODO = sys.argv[1]
     ADRESS = sys.argv[2].split(':')[0]
-    LOGIN = ADRESS.split('@')[0]
     SERVER = ADRESS.split('@')[1]
     PORT = int(sys.argv[2].split(':')[1])
 except (IndexError, ValueError):
@@ -35,9 +34,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
             my_socket.send(bytes('ACK sip:' + ADRESS + ' SIP/2.0', 'utf-8')
                            + b'\r\n\r\n')
     if METODO == 'BYE':
-        my_socket.send(bytes(METODO + ' sip:' + ADRESS + ' SIP/2.0', 'utf-8')
-                       + b'\r\n\r\n')
         if data.decode('utf-8') == "SIP/2.0 200 OK\r\n\r\n":
-            print('Recibido -- ', data.decode('utf-8'))
             print("Terminando socket...")
 print("Fin.")
